@@ -1,0 +1,13 @@
+app-nav {
+  width: fit-content;
+  display: block;
+  position: absolute;
+}
+
+.field-wrapper.invalid label {
+  color:red;
+}
+
+.field-wrapper.invalid input {
+  border-color: red;
+}

@@ -1,4 +1,5 @@
-import { Injectable, computed, effect, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 
 
 export type TodoItemState = 'active' | 'completed';
@@ -13,10 +14,11 @@ export interface TodoItem {
   providedIn: 'root'
 })
 export class TodoStorageService {
+  platfrormId = inject(PLATFORM_ID);
   private readonly LOCALSTORAGE_KEY = 'angular-pdp-app-todo-items';
-  private todoItems = signal<TodoItem[]>(JSON.parse(localStorage.getItem(this.LOCALSTORAGE_KEY) || '[]'));
+  private todoItems = signal<TodoItem[]>(isPlatformBrowser(this.platfrormId) ? (JSON.parse(localStorage.getItem(this.LOCALSTORAGE_KEY) || '[]')) : []);
   private uncompletedTodoItemsCount = computed(() => {
-    return this.todoItems().filter(item => item.state === 'active').length;
+    return this.todoItems()?.filter(item => item.state === 'active').length;
   });
 
 
@@ -61,6 +63,8 @@ export class TodoStorageService {
 }
 
   private todoItemsEffect = effect(() => {
-    localStorage.setItem(this.LOCALSTORAGE_KEY, JSON.stringify(this.todoItems()));
+    if (isPlatformBrowser(this.platfrormId)) {
+      localStorage.setItem(this.LOCALSTORAGE_KEY, JSON.stringify(this.todoItems()));
+    }
   })
 }

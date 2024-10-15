@@ -1,11 +1,13 @@
 <div class="todo-container">
+
 <h2 class="text-center text-2xl font-bold">Todo app</h2>
 <div class="max-w-md mx-auto p-4 border border-gray-200 rounded-lg shadow-md bg-white">
   <input class="w-full p-2 text-sm border rounded-md shadow-sm placeholder-gray-400 text-gray-700 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" (keydown.enter)="onAddTodoItem()" [formControl]="inputField"  type="text" placeholder="Enter your todo thing..." />
 
     <div class="max-w-md mx-auto">
-      <ul class="space-y-2">
+      <ul [@itemAnimation]="todoItems()" class="space-y-2">
         @for (todoItem of todoItems(); track todoItem.id) {
+          <!-- @itemAnimation -->
           <li class="flex items-center justify-between p-3 bg-white shadow-md rounded-md" [class.bg-gray-100]="todoItem.state === 'completed'">
             <span class="font-medium text-gray-700" [ngClass]="todoItem.state === 'completed' ? 'line-through text-gray-500' : ''">{{todoItem.name}}</span>
             <div class="flex items-center">
@@ -26,7 +28,7 @@
         }
       </ul>
       @if(todoItems().length) {
-        <div class="py-2 text-center text-xs font-bold text-gray-400">{{ counterText }}</div>
+        <div @fadeIn  class="py-2 text-center text-xs font-bold text-gray-400">{{ counterText }}</div>
       }
     </div>
 </div>
